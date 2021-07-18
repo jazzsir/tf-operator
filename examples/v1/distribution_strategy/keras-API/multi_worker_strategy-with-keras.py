@@ -94,6 +94,9 @@ def main(args):
   # Name of the checkpoint files
   checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
+  # Define the log directory to store the logs for tensorBoard
+  log_dir = args.log_dir
+
   # Function for decaying the learning rate.
   # You can define any decay function you need.
   # Callback for printing the LR at the end of each epoch.
@@ -104,7 +107,7 @@ def main(args):
         epoch + 1, multi_worker_model.optimizer.lr.numpy()))
 
   callbacks = [
-      tf.keras.callbacks.TensorBoard(log_dir='./logs'),
+      tf.keras.callbacks.TensorBoard(log_dir=log_dir),
       tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_prefix,
                                          save_weights_only=True),
       tf.keras.callbacks.LearningRateScheduler(decay),
@@ -155,6 +158,11 @@ if __name__ == '__main__':
                       type=str,
                       required=True,
                       help='Tensorflow checkpoint directory.')
+
+  parser.add_argument('--log_dir',
+                      type=str,
+                      required=True,
+                      help='Tensorflow log directory.')
 
   parsed_args = parser.parse_args()
   main(parsed_args)

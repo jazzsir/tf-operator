@@ -9,6 +9,9 @@ spec:
       replicas: 2
       restartPolicy: Never
       template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "false"
         spec:
           containers:
             - name: tensorflow
